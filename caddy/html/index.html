@@ -1,69 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Tovmachine</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="data:,">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-      color: #343a40;
-    }
+  <head>
+    <title>Tovmachine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        color: #343a40;
+      }
 
-    .container {
-      max-width: 800px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-    h1 {
-      text-align: center;
-    }
+      h1 {
+        text-align: center;
+      }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
 
-    li {
-      margin-bottom: 10px;
-    }
+      li {
+        margin-bottom: 10px;
+      }
 
-    li::before {
-      content: "\2022"; /* Bullet point */
-      color: #007bff;
-      font-weight: bold;
-      display: inline-block;
-      width: 1em;
-      margin-left: -1em;
-    }
+      li::before {
+        content: "\2022"; /* Bullet point */
+        color: #007bff;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
 
-    footer {
-      margin-top: 50px;
-      text-align: center;
-      color: #6c757d;
-    }
-  </style>
-</head>
+      footer {
+        margin-top: 50px;
+        text-align: center;
+        color: #6c757d;
+      }
+    </style>
+  </head>
 
-<body>
-  <div class="container">
-    <h1>Welcome to my production!</h1>
-    <p>Powered by:</p>
-        <li>Oracle Cloud VM.Standard.E2.1.Micro</li>
-        <li>Rocky Linux 9.3</li> 
-        <li>Caddy 2.7</li>
-  </div>
-  <footer>
-    <p>&copy; {{now | date "2006"}} Tovmachine</p>
-  </footer>
-</body>
+  <body>
+    <div class="container">
+      <h1>Welcome to my production!</h1>
+      <p>Powered by:</p>
+          <li>Oracle Cloud VM.Standard.E2.1.Micro</li>
+          <li>Rocky Linux 9.3</li> 
+          <li>Caddy 2.7</li>
+    </div>
+    <footer>
+      <p>&copy; {{now | date "2006"}} Tovmachine</p>
+    </footer>
+  </body>
 
 </html>
