@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+
+  caddy:
+    container_name: tovmachine-com-caddy
+    build:
+      context: ./
+      dockerfile: caddy/Dockerfile
+    ports:
+      - 127.0.0.1:80:80
+    volumes:
+      - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
+      - "./caddy/html:/var/www/html:ro"
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
