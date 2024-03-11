@@ -12,10 +12,6 @@ async function getLatestSkapingPictureUrl(skapingLocationUrl) {
 
 async function main() {
 
-
-    // Variables utilisateur - les personnaliser pour changer l'image qui défile, ses
-    // directions, et la vitesse.
-
     const img = new Image();
     img.src = await getLatestSkapingPictureUrl(SKAPING_LOCATION_URL);
 
@@ -25,15 +21,13 @@ async function main() {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    const speed = 30; // plus elle est basse, plus c'est rapide
+    const speed = 30;
     const scale = 1.05;
-    const y = -4.5; // décalage vertical
+    const y = -4.5;
 
-    // Programme principal
-
-    let dx = 0.75;
-    let imgW;
-    let imgH;
+    const dx = 0.75;
+    let imgWidth;
+    let imgHeight;
     let x = 0;
     let clearX;
     let clearY;
@@ -42,30 +36,25 @@ async function main() {
     let isRefreshing = true;
 
     img.onload = function() {
-        imgW = img.width * scale;
-        imgH = img.height * scale;
+        imgWidth = img.width * scale;
+        imgHeight = img.height * scale;
 
-        if (imgW > canvasWidth) {
-            // image plus grande que le canvas
-            x = canvasWidth - imgW;
+        if (imgWidth > canvasWidth) {
+            x = canvasWidth - imgWidth;
         }
-        if (imgW > canvasWidth) {
-            // largeur de l'image plus grande que le canvas
-            clearX = imgW;
+        if (imgWidth > canvasWidth) {
+            clearX = imgWidth;
         } else {
             clearX = canvasWidth;
         }
-        if (imgH > canvasHeight) {
-            // hauteur de l'image plus grande que le canvas
-            clearY = imgH;
+        if (imgHeight > canvasHeight) {
+            clearY = imgHeight;
         } else {
             clearY = canvasHeight;
         }
 
-        // récupérer le contexte du canvas
         ctx = document.getElementById('canvas').getContext('2d');
         const canvas = document.getElementById('canvas');
-        // définir le taux de rafraichissement
         let interval = setInterval(draw, speed);
         canvas.onclick = function(el) {
             if (isRefreshing) {
@@ -82,37 +71,27 @@ async function main() {
     function draw() {
         ctx.clearRect(0, 0, clearX, clearY); // clear the canvas
 
-        // si image est <= taille du canvas
-        if (imgW <= canvasWidth) {
-            // réinitialise, repart du début
+        if (imgWidth <= canvasWidth) {
             if (x > canvasWidth) {
-                console.log('réinitialise, repart du début');
-                x = -imgW + x;
+                x = -imgWidth + x;
             }
-            // dessine image1 supplémentaire
             if (x > 0) {
-                ctx.drawImage(img, -imgW + x, y, imgW, imgH);
+                ctx.drawImage(img, -imgWidth + x, y, imgWidth, imgHeight);
             }
-            // dessine image2 supplémentaire
-            if (x - imgW > 0) {
-                ctx.drawImage(img, -imgW * 2 + x, y, imgW, imgH);
+            if (x - imgWidth > 0) {
+                ctx.drawImage(img, -imgWidth * 2 + x, y, imgWidth, imgHeight);
             }
         }
 
-        // image est > taille du canvas
         else {
-            // réinitialise, repeart du début
             if (x > (canvasWidth)) {
-                x = canvasWidth - imgW;
+                x = canvasWidth - imgWidth;
             }
-            // dessine image supplémentaire
-            if (x > (canvasWidth-imgW)) {
-                ctx.drawImage(img, x - imgW + 1, y, imgW, imgH);
+            if (x > (canvasWidth-imgWidth)) {
+                ctx.drawImage(img, x - imgWidth + 1, y, imgWidth, imgHeight);
             }
         }
-        // dessine image
-        ctx.drawImage(img, x, y,imgW, imgH);
-        // quantité à déplacer
+        ctx.drawImage(img, x, y,imgWidth, imgHeight);
         x += dx;
     }
 }
