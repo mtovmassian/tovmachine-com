@@ -1,0 +1,65 @@
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #1c2128;
+    color: #c9d1d9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #22272e;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    margin: 5px auto;
+    padding: 5px;
+    background-color: #222d3b;
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #4c8dde;
+}
+
+p {
+    font-size: 18px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+li {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+li::before {
+    content: "\2022";
+    color: #4c8dde;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+}
+
+a {
+    color: #4c8dde;
+    text-decoration: underline;
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    color: #8b949e;
+}
