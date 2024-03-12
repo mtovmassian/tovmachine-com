@@ -10,7 +10,7 @@ services:
       - 127.0.0.1:80:80
     volumes:
       - "./caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
-      - "./caddy/html:/var/www/html:ro"
+      - "./src:/var/www/html:ro"
     deploy:
       resources:
         limits:
