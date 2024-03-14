@@ -20,6 +20,7 @@ body {
   justify-content: flex-start;
   align-items: baseline;
   padding-left: 10px;
+  bottom: 0;
 }
 
 a {
@@ -30,6 +31,9 @@ a {
 
 .spinner {
   display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
   width: 20px;
   height: 20px;
   margin-left: 10px;
@@ -54,4 +58,13 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-top: 50px;
+  text-align: center;
+  color: #8b949e;
 }

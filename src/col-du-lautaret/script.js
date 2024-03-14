@@ -25,7 +25,7 @@ async function main() {
     canvas.height = canvasHeight;
 
     const speed = 30;
-    const scale = 1.05;
+    const scale = 1.1;
     const y = -4.5;
 
     const dx = 0.75;

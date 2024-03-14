@@ -12,10 +12,14 @@
     <div id="container">
       <canvas id="canvas" width="" height=""></canvas>
     </div>
-    <div id="overlay">
-      <p>&copy; {{now | date "2006"}} Tovmachine - Photo by <a href="https://about.skaping.com/">Skaping</a></p>
-      <div id="spinner" class="spinner" style="display: none;"></div>
-    </div>
+    <div id="spinner" class="spinner" style="display: none;"></div>
+    <footer>
+      <p>
+        &copy; {{now | date "2006"}} Tovmachine - Martin Tovmassian
+        - Licensed under <a href="https://github.com/mtovmassian/tovmachine-com/blob/main/LICENSE" target="_blank">MIT License</a>
+        - Photo by <a href="https://about.skaping.com/">Skaping</a> 
+      </p>
+    </footer>
   </body>
 
   <script src="script.js"></script>

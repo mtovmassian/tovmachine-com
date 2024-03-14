@@ -49,12 +49,15 @@ section ul li::marker {
     color: #4c8dde;
 }
 
-section a {
+section a, footer a {
     color: #4c8dde;
     text-decoration: underline;
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     margin-top: 50px;
     text-align: center;
     color: #8b949e;
