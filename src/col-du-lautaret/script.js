@@ -12,6 +12,9 @@ async function getLatestSkapingPictureUrl(skapingLocationUrl) {
 
 async function main() {
 
+    const spinner = document.getElementById('spinner');
+    spinner.style.display = 'block';
+
     const img = new Image();
     img.src = await getLatestSkapingPictureUrl(SKAPING_LOCATION_URL);
 
@@ -36,6 +39,8 @@ async function main() {
     let isRefreshing = true;
 
     img.onload = function() {
+        spinner.style.display = 'none';
+
         imgWidth = img.width * scale;
         imgHeight = img.height * scale;
 

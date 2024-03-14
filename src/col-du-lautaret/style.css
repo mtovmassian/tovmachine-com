@@ -16,10 +16,42 @@ body {
 
 #overlay {
   position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
   padding-left: 10px;
 }
 
 a {
   color: #4c8dde;
   text-decoration: underline;
+}
+
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.spinner:after {
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 4px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: spinner 1.2s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
