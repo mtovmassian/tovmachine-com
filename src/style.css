@@ -7,6 +7,11 @@ body {
     padding: 0;
 }
 
+h2 {
+    text-align: center;
+    color: #4c8dde;
+}
+
 .container {
     max-width: 800px;
     margin: 50px auto;
@@ -16,44 +21,35 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.card {
-    margin: 5px auto;
-    padding: 5px;
-    background-color: #222d3b;
-    border-radius: 8px;
+section {
+    display: flex;
+    flex-direction: column;
 }
 
-h2 {
-    text-align: center;
-    color: #4c8dde;
+section h3 {
+    margin: 8px 0px 8px 0px;
 }
 
-p {
+section p {
     font-size: 18px;
+    margin-left: 10px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+section ul {
+    list-style-type: initial;
     text-align: left;
+    padding-left: 25px;
 }
 
-li {
-    margin-bottom: 10px;
-    position: relative;
+section ul li {
+    margin-bottom: 8px;
 }
 
-li::before {
-    content: "\2022";
+section ul li::marker {
     color: #4c8dde;
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-    position: absolute;
 }
 
-a {
+section a {
     color: #4c8dde;
     text-decoration: underline;
 }
