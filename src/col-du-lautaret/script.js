@@ -1,4 +1,4 @@
-const SKAPING_LOCATION_URL = 'https://keen-brattain-9e10d9.netlify.app/.netlify/functions/skaping-data?data=picture&location-url=https://www.skaping.com/serrechevalier/coldulautaret';
+const SKAPING_LOCATION_URL = 'https://scapin.netlify.app/.netlify/functions/skaping-data?data=picture&location-url=https://www.skaping.com/serrechevalier/coldulautaret';
 
 async function getLatestSkapingPictureUrl(skapingLocationUrl) {
     const response = await fetch(skapingLocationUrl, {
