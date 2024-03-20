@@ -11,7 +11,6 @@ async function getLatestSkapingPictureUrl(skapingLocationUrl) {
 }
 
 async function main() {
-
     const spinner = document.getElementById('spinner');
     spinner.style.display = 'block';
 
@@ -19,12 +18,11 @@ async function main() {
     img.src = await getLatestSkapingPictureUrl(SKAPING_LOCATION_URL);
 
     const canvasWidth = document.documentElement.clientWidth;
-    const canvasHeight = document.documentElement.clientHeight;;
+    const canvasHeight = document.documentElement.clientHeight;
     const canvas = document.getElementById('canvas');
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    const speed = 30;
     const scale = 1.1;
     const y = -4.5;
 
@@ -35,10 +33,12 @@ async function main() {
     let clearX;
     let clearY;
     let ctx;
+    let offscreenCanvas;
+    let offscreenCtx;
 
     let isRefreshing = true;
 
-    img.onload = function() {
+    img.onload = function () {
         spinner.style.display = 'none';
 
         imgWidth = img.width * scale;
@@ -63,18 +63,22 @@ async function main() {
         offscreenCanvas.width = canvasWidth;
         offscreenCanvas.height = canvasHeight;
         offscreenCtx = offscreenCanvas.getContext('2d');
-        
-        let interval = setInterval(draw, speed);
-        canvas.onclick = function(el) {
-            if (isRefreshing) {
-            clearInterval(interval);
-            isRefreshing = false;
-            } else {
-            interval = setInterval(draw, speed);
-            isRefreshing = true;
-            }
 
+        window.requestAnimationFrame(draw);
+        canvas.addEventListener('touchstart', preventDefaultTouch, { passive: false });
+
+        canvas.onclick = function (_) {
+            if (isRefreshing) {
+                isRefreshing = false;
+            } else {
+                isRefreshing = true;
+                window.requestAnimationFrame(draw);
+            }
         }
+    }
+
+    function preventDefaultTouch(e) {
+        e.preventDefault();
     }
 
     function draw() {
@@ -104,7 +108,12 @@ async function main() {
         ctx.drawImage(offscreenCanvas, 0, 0); // draw the off-screen canvas to the visible canvas
 
         x += dx;
+
+        if (isRefreshing) {
+            window.requestAnimationFrame(draw);
+        }
     }
+
 }
 
 main();
