@@ -58,8 +58,12 @@ async function main() {
             clearY = canvasHeight;
         }
 
-        ctx = document.getElementById('canvas').getContext('2d');
-        const canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+        offscreenCanvas = document.createElement('canvas');
+        offscreenCanvas.width = canvasWidth;
+        offscreenCanvas.height = canvasHeight;
+        offscreenCtx = offscreenCanvas.getContext('2d');
+        
         let interval = setInterval(draw, speed);
         canvas.onclick = function(el) {
             if (isRefreshing) {
@@ -74,29 +78,31 @@ async function main() {
     }
 
     function draw() {
-        ctx.clearRect(0, 0, clearX, clearY); // clear the canvas
+        offscreenCtx.clearRect(0, 0, clearX, clearY); // clear the off-screen canvas
 
         if (imgWidth <= canvasWidth) {
             if (x > canvasWidth) {
                 x = -imgWidth + x;
             }
             if (x > 0) {
-                ctx.drawImage(img, -imgWidth + x, y, imgWidth, imgHeight);
+                offscreenCtx.drawImage(img, -imgWidth + x, y, imgWidth, imgHeight);
             }
             if (x - imgWidth > 0) {
-                ctx.drawImage(img, -imgWidth * 2 + x, y, imgWidth, imgHeight);
+                offscreenCtx.drawImage(img, -imgWidth * 2 + x, y, imgWidth, imgHeight);
             }
-        }
-
-        else {
+        } else {
             if (x > (canvasWidth)) {
                 x = canvasWidth - imgWidth;
             }
-            if (x > (canvasWidth-imgWidth)) {
-                ctx.drawImage(img, x - imgWidth + 1, y, imgWidth, imgHeight);
+            if (x > (canvasWidth - imgWidth)) {
+                offscreenCtx.drawImage(img, x - imgWidth + 1, y, imgWidth, imgHeight);
             }
         }
-        ctx.drawImage(img, x, y,imgWidth, imgHeight);
+        offscreenCtx.drawImage(img, x, y, imgWidth, imgHeight);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // clear the visible canvas
+        ctx.drawImage(offscreenCanvas, 0, 0); // draw the off-screen canvas to the visible canvas
+
         x += dx;
     }
 }
