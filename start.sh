@@ -33,7 +33,7 @@ main() {
     set +u
     exec_opt="$1"
     set -u
-    ([[ "$exec_opt" == "exec" ]] && shift && docker_exec "$@") || :
+    { [[ "$exec_opt" == "exec" ]] && shift && docker_exec "$@"; } || :
 }
 
 main "$@"
