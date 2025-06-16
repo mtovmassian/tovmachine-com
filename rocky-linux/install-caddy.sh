@@ -11,12 +11,15 @@ install_caddy() {
 
 create_html_dir() {
     sudo mkdir -p /var/www/html
-    sudo chcon -R system_u:object_r:httpd_sys_content_t:s0 /var/www
+    sudo semanage fcontext -a -t httpd_sys_content_t "/var/www(/.*)?"
+    sudo restorecon -Rv /var/www
 }
 
 create_caddy_log_dir() {
     sudo mkdir -p /var/log/caddy
-    sudo chcon -R system_u:object_r:httpd_log_t:s0 /var/log/caddy
+    sudo chown -R caddy:caddy /var/log/caddy
+    sudo semanage fcontext -a -t httpd_log_t "/var/log/caddy(/.*)?"
+    sudo restorecon -Rv /var/log/caddy
 }
 
 start_caddy() {
