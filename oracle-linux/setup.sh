@@ -2,20 +2,27 @@
 
 set -euo pipefail
 
+readonly CADDY_VERSION="2.11.4"
+readonly CADDY_ARCHIVE="caddy_${CADDY_VERSION}_linux_amd64.tar.gz"
+
 add_firewall_http_https_service() {
-    sudo firewall-cmd --zone=public --add-service=http
-    sudo firewall-cmd --zone=public --add-service=https
-    sudo firewall-cmd reload
+    sudo firewall-cmd --zone=public --permanent --add-service=http --add-service=https
+    sudo firewall-cmd --reload
 }
 
 install_caddy_executable() {
-    sudo curl -L https://github.com/caddyserver/caddy/releases/download/v2.11.4/caddy_2.11.4_linux_amd64.tar.gz -OJ
+    sudo rm -f "$CADDY_ARCHIVE"
+    sudo curl -L "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/${CADDY_ARCHIVE}" -OJ
     sudo tar xzvf caddy_2.11.4_linux_amd64.tar.gz caddy
     sudo install caddy /usr/bin/caddy
 }
 
 create_caddy_system_user() {
-    sudo useradd --system --home-dir /var/lib/caddy --shell /usr/sbin/nologin caddy
+    if ! id caddy; then
+    	sudo useradd --system --home-dir /var/lib/caddy --shell /usr/sbin/nologin caddy
+    else
+	    echo "System user caddy already exists"
+    fi
 }
 
 create_caddy_dirs() {
