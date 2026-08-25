@@ -1,0 +1,148 @@
+---
+- name: Configure Oracle Micro VM to serve the site with Caddy
+  hosts: all
+  become: true
+
+  vars:
+    caddy_version: "2.11.4"
+    caddy_archive: "caddy_{{ caddy_version }}_linux_amd64.tar.gz"
+    caddy_download_url: "https://github.com/caddyserver/caddy/releases/download/v{{ caddy_version }}/{{ caddy_archive }}"
+    caddy_tmp_dir: "/tmp"
+
+  tasks:
+    - name: Open http/https in firewalld
+      ansible.posix.firewalld:
+        zone: public
+        service: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop:
+        - http
+        - https
+
+    - name: Download Caddy release archive
+      ansible.builtin.get_url:
+        url: "{{ caddy_download_url }}"
+        dest: "{{ caddy_tmp_dir }}/{{ caddy_archive }}"
+        mode: "0644"
+
+    - name: Extract Caddy archive
+      ansible.builtin.unarchive:
+        src: "{{ caddy_tmp_dir }}/{{ caddy_archive }}"
+        dest: "{{ caddy_tmp_dir }}"
+        remote_src: true
+
+    - name: Install Caddy executable
+      ansible.builtin.copy:
+        src: "{{ caddy_tmp_dir }}/caddy"
+        dest: /usr/bin/caddy
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0755"
+      notify: Restart caddy
+
+    - name: Create caddy system user
+      ansible.builtin.user:
+        name: caddy
+        system: true
+        home: /var/lib/caddy
+        shell: /usr/sbin/nologin
+        create_home: false
+
+    - name: Create /etc/caddy
+      ansible.builtin.file:
+        path: /etc/caddy
+        state: directory
+        mode: "0755"
+
+    - name: Create /var/www/html
+      ansible.builtin.file:
+        path: /var/www/html
+        state: directory
+        mode: "0755"
+
+    - name: Set SELinux context for /var/www
+      community.general.sefcontext:
+        target: '/var/www(/.*)?'
+        setype: httpd_sys_content_t
+        state: present
+      register: www_fcontext
+
+    - name: Apply SELinux context to /var/www
+      ansible.builtin.command: restorecon -Rv /var/www
+      when: www_fcontext.changed
+      changed_when: true
+
+    - name: Create /var/log/caddy
+      ansible.builtin.file:
+        path: /var/log/caddy
+        state: directory
+        owner: caddy
+        group: caddy
+        mode: "0755"
+
+    - name: Set SELinux context for /var/log/caddy
+      community.general.sefcontext:
+        target: '/var/log/caddy(/.*)?'
+        setype: httpd_log_t
+        state: present
+      register: log_fcontext
+
+    - name: Apply SELinux context to /var/log/caddy
+      ansible.builtin.command: restorecon -Rv /var/log/caddy
+      when: log_fcontext.changed
+      changed_when: true
+
+    - name: Copy Caddyfile
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../caddy/Caddyfile"
+        dest: /etc/caddy/Caddyfile
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Reload caddy
+
+    - name: Install caddy systemd service unit
+      ansible.builtin.copy:
+        src: files/caddy.service
+        dest: /usr/lib/systemd/system/caddy.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart caddy
+
+    - name: Enable and start caddy
+      ansible.builtin.systemd:
+        name: caddy
+        daemon_reload: true
+        enabled: true
+        state: started
+
+    - name: Copy site content to /var/www/html
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../src/"
+        dest: /var/www/html/
+        owner: root
+        group: root
+        mode: "u=rwX,go=rX"
+      notify: Relabel site content
+      tags:
+        - content
+
+  handlers:
+    - name: Restart caddy
+      ansible.builtin.systemd:
+        name: caddy
+        daemon_reload: true
+        state: restarted
+
+    - name: Reload caddy
+      ansible.builtin.systemd:
+        name: caddy
+        state: reloaded
+
+    - name: Relabel site content
+      ansible.builtin.command: restorecon -Rv /var/www/html
+      changed_when: true
