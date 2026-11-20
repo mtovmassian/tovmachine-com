@@ -38,18 +38,20 @@ The editor is a Nuxt app that stores resumes in the browser (IndexedDB/localStor
 The source of truth is the database export tracked in
 `markdown-resume/data/MARKDOWN_RESUME_data.json`.
 
-1. Start the editor:
+1. Start the editor (requires Node.js 26, e.g. `nvm install 26`):
 
    ```sh
    cd markdown-resume
+   nvm use 26
    pnpm install
-   pnpm build:pkg
    pnpm dev   # http://localhost:3000/markdown-resume/
    ```
 
 2. On the resumes list, use **Restore DB ...** and pick `data/MARKDOWN_RESUME_data.json`
    (skip this step if the browser already holds the latest version).
-3. Edit the "Martin Tovmassian DevOps Engineer" resume.
+3. Edit the "Martin Tovmassian DevOps Engineer" resume. Icons use the Markdown syntax
+   `::mdi:icon-name::`; the legacy `<span class="iconify" data-icon="...">` markup no
+   longer renders (the **Migrate Iconify** toolbar tool converts it).
 4. Back on the resumes list, use **Backup DB ...** and overwrite
    `data/MARKDOWN_RESUME_data.json` with the downloaded file.
 5. In the editor, use **Export PDF** and save it as PDF from the print dialog. The file is
@@ -82,3 +84,22 @@ The source of truth is the database export tracked in
    cd ansible
    ansible-playbook playbook.yml --tags content
    ```
+
+### Sync with upstream
+
+The fork only adds commits on `data/`, so it can be rebased onto
+[junian/markdown-resume](https://github.com/junian/markdown-resume) `master`:
+
+```sh
+cd markdown-resume
+git remote add upstream https://github.com/junian/markdown-resume.git  # once
+git fetch upstream
+git checkout master
+git rebase upstream/master
+git push --force-with-lease origin master
+cd ..
+git add markdown-resume
+git commit -m "update markdown-resume to latest upstream"
+```
+
+Check the upstream changes before restoring the data (Node.js version, resume syntax).
