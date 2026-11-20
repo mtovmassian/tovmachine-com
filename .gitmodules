@@ -1,3 +1,3 @@
 [submodule "markdown-resume"]
 	path = markdown-resume
-	url = git@github-perso:mtovmassian/markdown-resume.git
+	url = https://github.com/mtovmassian/markdown-resume.git
